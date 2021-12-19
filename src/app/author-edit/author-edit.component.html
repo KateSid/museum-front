@@ -1,0 +1,38 @@
+<h1 class="mb-4">Изменить данные {{ title }}</h1>
+<form class="table-responsive" *ngIf="showAdmin" [formGroup]="itemForm" (ngSubmit)="save()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="country">Страна</label></th>
+        <th scope="col"><label for="dateOfBirth">Дата рождения</label></th>
+        <th scope="col"><label for="dateOfDeath">Дата смерти</label></th>
+        <th scope="col"><label for="firstName">Имя</label></th>
+        <th scope="col"><label for="lastName">Фамилия</label></th>
+        <th scope="col"><label for="fullName">Полное имя</label></th>
+        <th scope="col"><label for="pseudonym">Псевдоним</label></th>
+        <th scope="col" class="text-end">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="item">
+        <td><input id="country" class="form-control" formControlName="country" required></td>
+        <td><input id="dateOfBirth" type="date" class="form-control" formControlName="dateOfBirth" required></td>
+        <td><input id="dateOfDeath" type="date" class="form-control" formControlName="dateOfDeath"></td>
+        <td><input id="firstName" class="form-control" formControlName="firstName" required></td>
+        <td><input id="lastName" class="form-control" formControlName="lastName" required></td>
+        <td><input id="fullName" class="form-control" formControlName="fullName" required></td>
+        <td><input id="pseudonym" class="form-control" formControlName="pseudonym" required></td>
+        <td class="text-end">
+          <button type="submit" class="btn btn-secondary" [disabled]="!itemForm.valid">Сохранить</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="8" class="text-end">
+          <button type="button" class="btn btn-secondary w-100" (click)="goBack()">Назад</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>

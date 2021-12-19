@@ -1,0 +1,51 @@
+<header class="mb-5">
+  <nav class="p-3 navbar navbar-expand navbar-dark bg-dark fs-5">
+    <a href="/home" class="navbar-brand" routerLink="home">Museum</a>
+    <ul class="navbar-nav flex-wrap flex-fill" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/authors" routerLinkActive="active">Авторы</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/exhibits" routerLinkActive="active">Экспонаты</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/exposures" routerLinkActive="active">Выставки</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/restorations" routerLinkActive="active">Реставрации</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/showrooms" routerLinkActive="active">Выставочные залы</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto" *ngIf="!isLoggedIn">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/register" routerLinkActive="active">Регистрация</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Войти</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/profile" routerLinkActive="active">Профиль</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">Выйти</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container-fluid">
+  <div class="px-xl-5">
+    <div class="row">
+      <main [ngClass]="showAdmin ? 'col-7 col-md-9 col-xl-10' : 'col'">
+        <router-outlet></router-outlet>
+      </main>
+      <aside class="col-5 col-md-3 col-xl-2" *ngIf="showAdmin">
+        <app-messages></app-messages>
+      </aside>
+    </div>
+  </div>
+</div>

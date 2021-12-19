@@ -1,0 +1,36 @@
+<h1 class="mb-4">{{ pagetitle }}</h1>
+<form class="table-responsive" *ngIf="isLoggedIn" [formGroup]="itemForm" (ngSubmit)="add(); itemForm.reset()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="floor">Этаж</label></th>
+        <th scope="col"><label for="name">Название</label></th>
+        <th scope="col"><label for="size">Размер (м<sup>2</sup>)</label></th>
+        <th scope="col" class="text-end" *ngIf="showAdmin">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of itemList" id="{{ item.id }}">
+        <td>{{ item.floor }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.size }}</td>
+        <td *ngIf="showAdmin">
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary me-2" routerLink="/{{ path }}/{{ item.id }}">Изменить</a>
+            <button type="button" class="btn btn-secondary" (click)="delete(item)">&times;</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="showAdmin">
+      <tr>
+        <td><input id="floor" type="number" class="form-control" formControlName="floor" placeholder="Этаж" required></td>
+        <td><input id="name" class="form-control" formControlName="name" placeholder="Название" required></td>
+        <td><input id="size" type="number" class="form-control" formControlName="size" placeholder="Размер" required></td>
+        <td>
+          <button type="submit" class="btn btn-secondary w-100" [disabled]="!itemForm.valid">Добавить</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>

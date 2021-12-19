@@ -1,0 +1,37 @@
+<h1 class="mb-4 text-center">{{ pagetitle }}</h1>
+
+<form class="mx-auto" *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+  <div class="form-group mb-3">
+    <label for="username" class="mb-2">Имя пользователя</label>
+    <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required minlength="3" maxlength="20" #username="ngModel">
+    <div class="alert-danger" *ngIf="username.errors && f.submitted">
+      <div *ngIf="username.errors.required">Введите имя пользователя</div>
+      <div *ngIf="username.errors.minlength">
+        Имя пользователя должно содержать не менее 3 символов
+      </div>
+      <div *ngIf="username.errors.maxlength">
+        Имя пользователя должно содержать не более 20 символов
+      </div>
+    </div>
+  </div>
+  <div class="form-group mb-4">
+    <label for="password" class="mb-2">Пароль</label>
+    <input type="password" class="form-control" name="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel">
+    <div class="alert-danger" *ngIf="password.errors && f.submitted">
+      <div *ngIf="password.errors.required">Введите пароль</div>
+      <div *ngIf="password.errors.minlength">
+        Пароль должен содержать не менее 3 символов
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-secondary w-100">Зарегистрироваться</button>
+
+  <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+    Ошибка регистрации<br>{{ errorMessage }}
+  </div>
+</form>
+
+<div class="alert alert-success" *ngIf="isSuccessful">
+  Регистрация успешна!
+</div>

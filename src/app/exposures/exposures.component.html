@@ -1,0 +1,129 @@
+<h1 class="mb-4">{{ pagetitle }}</h1>
+<form class="table-responsive" *ngIf="isLoggedIn" [formGroup]="itemForm" (ngSubmit)="add(); itemForm.reset()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="startDateTime">Время начала</label></th>
+        <th scope="col"><label for="endDateTime">Время окончания</label></th>
+        <th scope="col"><label for="name">Название</label></th>
+        <th scope="col"><label for="showroom">Выставочный зал</label></th>
+        <th scope="col" class="exhibits"><label for="exhibits">Экспонаты</label></th>
+        <th scope="col"><label for="type">Тип</label></th>
+        <th scope="col" class="text-end" *ngIf="showAdmin">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of itemList" id="{{ item.id }}">
+        <td>{{ item.startDateTime }}</td>
+        <td>{{ item.endDateTime }}</td>
+        <td>{{ item.name }}</td>
+        <td>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" attr.data-bs-target="#modal{{ item.id }}Showroom">
+            Смотреть
+          </button>
+          <div class="modal fade" id="modal{{ item.id }}Showroom" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2>Выставочный зал</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                  <table class="table">
+                    <thead class="table-secondary">
+                      <tr>
+                        <th scope="col">Этаж</th>
+                        <th scope="col">Название</th>
+                        <th scope="col">Размер</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="item.showroom">
+                        <td>{{ item.showroom.floor }}</td>
+                        <td>{{ item.showroom.name }}</td>
+                        <td>{{ item.showroom.size }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" attr.data-bs-target="#modal{{ item.id }}Exhibits">
+            Смотреть
+          </button>
+          <div class="modal fade" id="modal{{ item.id }}Exhibits" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2>Экспонаты</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                  <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                          <th scope="col">Дата создания</th>
+                          <th scope="col">Информация</th>
+                          <th scope="col">Название</th>
+                          <th scope="col">Тип</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let exhibit of item.exhibits">
+                        <td>{{ exhibit.creationDate }}</td>
+                        <td>
+                          <div><em>Доп. информация:</em> {{ exhibit.info.additionalInformation }}</div>
+                          <div><em>Высота:</em> {{ exhibit.info.height }}</div>
+                          <div><em>Длина:</em> {{ exhibit.info.length }}</div>
+                          <div><em>Ширина:</em> {{ exhibit.info.width }}</div>
+                        </td>
+                        <td>{{ exhibit.name }}</td>
+                        <td>{{ exhibit.type }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>{{ item.type }}</td>
+        <td *ngIf="showAdmin">
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary me-2" routerLink="/{{ path }}/{{ item.id }}">Изменить</a>
+            <button type="button" class="btn btn-secondary" (click)="delete(item)">&times;</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="showAdmin">
+      <tr>
+        <td><input id="startDateTime" type="datetime-local" class="form-control" formControlName="startDateTime" placeholder="Время начала" required></td>
+        <td><input id="endDateTime" type="datetime-local" class="form-control" formControlName="endDateTime" placeholder="Время окончания" required></td>
+        <td><input id="name" class="form-control" formControlName="name" placeholder="Название" required></td>
+        <td>
+          <select id="showroom" class="form-select" formControlName="showroomForm" required>
+            <option value=""></option>
+            <option value="{{ item.id }}" *ngFor="let item of itemListShowroom">{{ item.floor }}, {{ item.name }}, {{ item.size }}</option>
+          </select>
+        </td>
+        <td>
+          <select id="exhibits" class="form-select" multiple formControlName="exhibitsForm" required>
+            <option [ngValue]="item" *ngFor="let item of itemListExhibit">{{ item.creationDate }} {{ item.name }} {{ item.type }}</option>
+          </select>
+        </td>
+        <td><input id="type" class="form-control" formControlName="type" placeholder="Тип" required></td>
+        <td>
+          <button type="submit" class="btn btn-secondary w-100" [disabled]="!itemForm.valid">Добавить</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>

@@ -1,0 +1,10 @@
+<h3 class="h1 mb-4">Сообщения</h3>
+<button class="btn btn-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">Открыть</button>
+<div class="collapse" id="collapse">
+  <div class="py-3">
+    <button class="btn btn-light w-100 mb-3" type="button" (click)="messageService.clear()">Очистить</button>
+    <div *ngIf="messageService.messages.length">
+      <p class="mb-0" *ngFor='let message of messageService.messages.reverse()'> {{message}} </p>
+    </div>
+  </div>
+</div>

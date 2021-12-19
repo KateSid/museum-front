@@ -1,0 +1,30 @@
+<h1 class="mb-4">Изменить данные {{ title }}</h1>
+<form class="table-responsive" *ngIf="showAdmin" [formGroup]="itemForm" (ngSubmit)="save()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="floor">Этаж</label></th>
+        <th scope="col"><label for="name">Название</label></th>
+        <th scope="col"><label for="size">Размер (м<sup>2</sup>)</label></th>
+        <th scope="col" class="text-end">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="item">
+        <td><input id="floor" type="number" class="form-control" formControlName="floor" required></td>
+        <td><input id="name" class="form-control" formControlName="name" required></td>
+        <td><input id="size" type="number" class="form-control" formControlName="size" required></td>
+        <td class="text-end">
+          <button type="submit" class="btn btn-secondary" [disabled]="!itemForm.valid">Сохранить</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="8" class="text-end">
+          <button type="button" class="btn btn-secondary w-100" (click)="goBack()">Назад</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>

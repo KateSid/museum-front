@@ -1,0 +1,48 @@
+<h1 class="mb-4">{{ pagetitle }}</h1>
+<form class="table-responsive" *ngIf="isLoggedIn" [formGroup]="itemForm" (ngSubmit)="add(); itemForm.reset()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="country">Страна</label></th>
+        <th scope="col"><label for="dateOfBirth">Дата рождения</label></th>
+        <th scope="col"><label for="dateOfDeath">Дата смерти</label></th>
+        <th scope="col"><label for="firstName">Имя</label></th>
+        <th scope="col"><label for="lastName">Фамилия</label></th>
+        <th scope="col"><label for="fullName">Полное имя</label></th>
+        <th scope="col"><label for="pseudonym">Псевдоним</label></th>
+        <th scope="col" class="text-end" *ngIf="showAdmin">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of itemList" id="{{ item.id }}">
+        <td>{{ item.country }}</td>
+        <td>{{ item.dateOfBirth }}</td>
+        <td>{{ item.dateOfDeath }}</td>
+        <td>{{ item.firstName }}</td>
+        <td>{{ item.lastName }}</td>
+        <td>{{ item.fullName }}</td>
+        <td>{{ item.pseudonym }}</td>
+        <td *ngIf="showAdmin">
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary me-2" routerLink="/{{ path }}/{{ item.id }}">Изменить</a>
+            <button type="button" class="btn btn-secondary" (click)="delete(item)">&times;</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="showAdmin">
+      <tr>
+        <td><input id="country" class="form-control" formControlName="country" placeholder="Страна" required></td>
+        <td><input id="dateOfBirth" type="date" class="form-control" formControlName="dateOfBirth" placeholder="Дата рождения" required></td>
+        <td><input id="dateOfDeath" type="date" class="form-control" formControlName="dateOfDeath" placeholder="Дата смерти"></td>
+        <td><input id="firstName" class="form-control" formControlName="firstName" placeholder="Имя" required></td>
+        <td><input id="lastName" class="form-control" formControlName="lastName" placeholder="Фамилия" required></td>
+        <td><input id="fullName" class="form-control" formControlName="fullName" placeholder="Полное имя" required></td>
+        <td><input id="pseudonym" class="form-control" formControlName="pseudonym" placeholder="Псевдоним" required></td>
+        <td>
+          <button type="submit" class="btn btn-secondary w-100" [disabled]="!itemForm.valid">Добавить</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>

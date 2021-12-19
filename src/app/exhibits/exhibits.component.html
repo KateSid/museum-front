@@ -1,0 +1,144 @@
+<h1 class="mb-4">{{ pagetitle }}</h1>
+<form class="table-responsive" *ngIf="isLoggedIn" [formGroup]="itemForm" (ngSubmit)="add(); itemForm.reset()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+        <tr>
+          <th scope="col"><label for="creationDate">Дата создания</label></th>
+          <th scope="col" class="authors"><label for="authors">Авторы</label></th>
+          <th scope="col"><label for="additionalInformation">Информация</label></th>
+          <th scope="col"><label for="height">Высота</label></th>
+          <th scope="col"><label for="length">Длина</label></th>
+          <th scope="col"><label for="width">Ширина</label></th>
+          <th scope="col"><label for="name">Название</label></th>
+          <th scope="col">Реставрации</th>
+          <th scope="col"><label for="type">Тип</label></th>
+          <th scope="col" class="text-end" *ngIf="showAdmin">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of itemList" id="{{ item.id }}">
+        <td>{{ item.creationDate }}</td>
+        <td>
+          <div *ngFor="let author of item.authors">
+            {{ author.firstName }} {{ author.lastName }} {{ author.pseudonym }}
+          </div>
+        </td>
+        <td>{{ item.info.additionalInformation }}</td>
+        <td>{{ item.info.height }}</td>
+        <td>{{ item.info.length }}</td>
+        <td>{{ item.info.width }}</td>
+        <td>{{ item.name }}</td>
+        <td>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" attr.data-bs-target="#modal{{ item.id }}Restoration">
+            Смотреть
+          </button>
+          <div class="modal fade" id="modal{{ item.id }}Restoration" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2>Реставрации</h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                  <table class="table">
+                    <thead class="table-secondary">
+                      <tr>
+                        <th scope="col">Комментарий</th>
+                        <th scope="col">Сотрудник</th>
+                        <th scope="col">Дата окончания</th>
+                        <th scope="col">Дата начала</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let restoration of item.restorations">
+                        <td>{{ restoration.comment }}</td>
+                        <td>
+                          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" attr.data-bs-target="#modal{{ item.id }}Restoration{{ restoration.id }}employee">
+                            Смотреть
+                          </button>
+                        </td>
+                        <td>{{ restoration.endDate }}</td>
+                        <td>{{ restoration.startDate }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>{{ item.type }}</td>
+        <td *ngIf="showAdmin">
+          <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary me-2" routerLink="/{{ path }}/{{ item.id }}">Изменить</a>
+            <button type="button" class="btn btn-secondary" (click)="delete(item)">&times;</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="showAdmin">
+      <tr>
+        <td><input id="creationDate" type="date" class="form-control" formControlName="creationDate" placeholder="Дата создания" required></td>
+        <td>
+          <select id="authors" class="form-select" multiple formControlName="authorsForm" required>
+            <option [ngValue]="item" *ngFor="let item of itemListAuthor">{{ item.firstName }} {{ item.lastName }} {{ item.pseudonym }}</option>
+          </select>
+        </td>
+        <td><input id="additionalInformation" class="form-control" formControlName="additionalInformation" placeholder="Информация" required></td>
+        <td><input id="height" class="form-control" formControlName="height" placeholder="Высота" required></td>
+        <td><input id="length" class="form-control" formControlName="length" placeholder="Длина" required></td>
+        <td><input id="width" class="form-control" formControlName="width" placeholder="Ширина" required></td>
+        <td><input id="name" class="form-control" formControlName="name" placeholder="Название" required></td>
+        <td></td>
+        <td><input id="type" class="form-control" formControlName="type" placeholder="Тип" required></td>
+        <td>
+          <button type="submit" class="btn btn-secondary w-100" [disabled]="!itemForm.valid">Добавить</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>
+
+<div *ngIf="isLoggedIn">
+  <div *ngFor="let item of itemList">
+    <div *ngFor="let restoration of item.restorations">
+
+      <div class="modal fade" id="modal{{ item.id }}Restoration{{ restoration.id }}employee" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>Сотрудник</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+              <table class="table">
+                <thead class="table-secondary">
+                  <tr>
+                    <th scope="col">Номер</th>
+                    <th scope="col">Полное имя</th>
+                    <th scope="col">Должность</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ restoration.employee.employeeNumber }}</td>
+                    <td>{{ restoration.employee.fullName }}</td>
+                    <td>{{ restoration.employee.position }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="modal-footer border-0">
+              <button class="btn btn-secondary" data-bs-toggle="modal" attr.data-bs-target="#modal{{ item.id }}Restoration">Назад</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

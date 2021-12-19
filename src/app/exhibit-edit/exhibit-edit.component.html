@@ -1,0 +1,44 @@
+<h1 class="mb-4">Изменить данные {{ title }}</h1>
+<form class="table-responsive" *ngIf="showAdmin" [formGroup]="itemForm" (ngSubmit)="save()">
+  <table class="table table-hover">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col"><label for="creationDate">Дата создания</label></th>
+        <th scope="col" class="authors"><label for="authors">Авторы</label></th>
+        <th scope="col"><label for="additionalInformation">Информация</label></th>
+        <th scope="col"><label for="height">Высота</label></th>
+        <th scope="col"><label for="length">Длина</label></th>
+        <th scope="col"><label for="width">Ширина</label></th>
+        <th scope="col"><label for="name">Название</label></th>
+        <th scope="col"><label for="type">Тип</label></th>
+        <th scope="col" class="text-end">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="item">
+        <td><input id="creationDate" type="date" class="form-control" formControlName="creationDate" required></td>
+        <td>
+          <select id="authors" class="form-select" multiple [compareWith]="compareFn" formControlName="authorsForm" required>
+            <option [ngValue]="item" *ngFor="let item of itemListAuthor">{{ item.firstName }} {{ item.lastName }} {{ item.pseudonym }}</option>
+          </select>
+        </td>
+        <td><input id="additionalInformation" class="form-control" formControlName="additionalInformation" required></td>
+        <td><input id="height" class="form-control" formControlName="height" required></td>
+        <td><input id="length" class="form-control" formControlName="length" required></td>
+        <td><input id="width" class="form-control" formControlName="width" required></td>
+        <td><input id="name" class="form-control" formControlName="name" required></td>
+        <td><input id="type" class="form-control" formControlName="type" required></td>
+        <td class="text-end">
+          <button type="submit" class="btn btn-secondary" [disabled]="!itemForm.valid">Сохранить</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="9" class="text-end">
+          <button type="button" class="btn btn-secondary w-100" (click)="goBack()">Назад</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</form>
